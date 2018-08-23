@@ -407,7 +407,7 @@ const node = {
 
 const rpc = {
   account: (keys, amount, spendable, delegatable, delegate, fee) => {
-    const operation = {
+    const operation = [{
       kind: 'origination',
       fee: fee.toString(),
       managerPubkey: keys.pkh,
@@ -415,7 +415,7 @@ const rpc = {
       spendable: (typeof spendable !== 'undefined' ? spendable : true),
       delegatable: (typeof delegatable !== 'undefined' ? delegatable : true),
       delegate: (typeof delegate !== 'undefined' ? delegate : keys.pkh),
-    };
+    }];
     return rpc.sendOperation(keys.pkh, operation, keys);
   },
   getBalance: tz1 => (
@@ -519,21 +519,21 @@ const rpc = {
       }));
   },
   transfer: (from, keys, to, amount, fee) => {
-    const operation = {
+    const operation = [{
       kind: 'transaction',
       fee: fee.toString(),
       gas_limit: '200',
       amount: utility.mutez(amount).toString(),
       destination: to,
-    };
+    }];
     return rpc.sendOperation(from, operation, keys);
   },
   activate: (keys, secret) => {
-    const operation = {
+    const operation = [{
       kind: 'activate_account',
       pkh: keys.pkh,
       secret,
-    };
+    }];
     return rpc.sendOperation(keys.pkh, operation, keys);
   },
   originate: (keys, amount, code, init, spendable, delegatable, delegate, fee) => {
@@ -542,7 +542,7 @@ const rpc = {
       code: _code,
       storage: utility.sexp2mic(init),
     };
-    const operation = {
+    const operation = [{
       kind: 'origination',
       fee: fee.toString(),
       gas_limit: '10000',
@@ -553,23 +553,23 @@ const rpc = {
       delegatable: (typeof delegatable !== 'undefined' ? delegatable : false),
       delegate: (typeof delegate !== 'undefined' && delegate ? delegate : keys.pkh),
       script,
-    };
+    }];
     return rpc.sendOperation(keys.pkh, operation, keys);
   },
   setDelegate: (from, keys, delegate, fee) => {
-    const operation = {
+    const operation = [{
       kind: 'delegation',
       fee: fee.toString(),
       delegate: (typeof delegate !== 'undefined' ? delegate : keys.pkh),
-    };
+    }];
     return rpc.sendOperation(from, operation, keys);
   },
   registerDelegate: (keys, fee) => {
-    const operation = {
+    const operation = [{
       kind: 'delegation',
       fee: fee.toString(),
       delegate: keys.pkh,
-    };
+    }];
     return rpc.sendOperation(keys.pkh, operation, keys);
   },
   typecheckCode: (code) => {
